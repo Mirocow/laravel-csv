@@ -28,6 +28,8 @@ class Builder
 
     protected bool|array $sanitize = false;
 
+    protected array $collums = [];
+
     public function __construct(protected Reader $reader)
     {
         $this->statement = app(Statement::class);
@@ -70,13 +72,22 @@ class Builder
         ));
     }
 
+    public function withColums(callable $collback = null): static
+    {
+        if(!is_null($collback)){
+            $this->collums = $collback($this->getReader()->getHeader());
+        }
+
+        return $this;
+    }
+
     public function lazy(int $chunkSize = 1000): LazyCollection
     {
         return LazyCollection::make(function () use ($chunkSize) {
             $page = 1;
 
             while (true) {
-                $results = $this->forPage($page++, $chunkSize)->get();
+                $results = $this->forPage($page++, $chunkSize)->get($this->withColums()->collums);
 
                 foreach ($results as $result) {
                     yield $result;

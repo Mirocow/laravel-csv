@@ -8,28 +8,53 @@ use SplFileObject;
 
 class Factory
 {
-    public function fromDisk(string $disk, string $path, string $open_mode = 'r'): Csv
+    public function fromDisk(string $disk, string $path, string $open_mode = 'r', string $delimiter = ',', string $enclosure = '"', string $escape = '\\'): Csv
     {
-        return new Csv(Reader::createFromPath(Storage::disk($disk)->path($path), $open_mode));
+        $reader = Reader::createFromPath(Storage::disk($disk)->path($path), $open_mode)
+            ->setDelimiter($delimiter)
+            ->setEnclosure($enclosure)
+            ->setEscape($escape);
+
+        return new Csv($reader);
     }
 
-    public function fromFileObject(SplFileObject $file): Csv
+    public function fromFileObject(SplFileObject $file, string $delimiter = ',', string $enclosure = '"', string $escape = '\\'): Csv
     {
-        return new Csv(Reader::createFromFileObject($file));
+        $reader = Reader::createFromFileObject($file)
+            ->setDelimiter($delimiter)
+            ->setEnclosure($enclosure)
+            ->setEscape($escape);
+
+        return new Csv($reader);
     }
 
-    public function fromPath(string $path, string $open_mode = 'r'): Csv
+    public function fromPath(string $path, string $open_mode = 'r', string $delimiter = ',', string $enclosure = '"', string $escape = '\\'): Csv
     {
-        return new Csv(Reader::createFromPath($path, $open_mode));
+        $reader = Reader::createFromPath($path, $open_mode)
+            ->setDelimiter($delimiter)
+            ->setEnclosure($enclosure)
+            ->setEscape($escape);
+
+        return new Csv($reader);
     }
 
-    public function fromStream($stream): Csv
+    public function fromStream($stream, string $delimiter = ',', string $enclosure = '"', string $escape = '\\'): Csv
     {
-        return new Csv(Reader::createFromStream($stream));
+        $reader = Reader::createFromStream($stream)
+            ->setDelimiter($delimiter)
+            ->setEnclosure($enclosure)
+            ->setEscape($escape);
+
+        return new Csv($reader);
     }
 
-    public function fromString(string $content): Csv
+    public function fromString(string $content, string $delimiter = ',', string $enclosure = '"', string $escape = '\\'): Csv
     {
-        return new Csv(Reader::createFromString($content));
+        $reader = Reader::createFromString($content)
+            ->setDelimiter($delimiter)
+            ->setEnclosure($enclosure)
+            ->setEscape($escape);
+
+        return new Csv($reader);
     }
 }
