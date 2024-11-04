@@ -80,7 +80,7 @@ class Builder
         $collums = $this->getReader()->getHeader();
 
         foreach ($collums as &$value) {
-            $row = new Row\Column($value, true);
+            $row = new Row\Column($value, $this->sanitize);
             $value = $row->getValue();
         }
 
