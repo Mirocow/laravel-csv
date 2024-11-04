@@ -4,7 +4,7 @@ namespace Rahul900day\Csv\Sanitizers;
 
 use Closure;
 
-class ConvertCharset
+class ConvertCharsetFromCp1251ToUtf8
 {
     const FROM_CHARSET = 'windows-1251';
     const TO_CHARSET = 'utf-8';
