@@ -16,6 +16,8 @@ use JsonSerializable;
 use League\Csv\Reader;
 use League\Csv\Statement;
 use Rahul900day\Csv\Concerns\HasReader;
+use Rahul900day\Csv\Sanitizers\ConvertCharset;
+use Rahul900day\Csv\Sanitizers\TrimString;
 use Rahul900day\Csv\Sheet\Row;
 use Traversable;
 use UnitEnum;
@@ -74,8 +76,16 @@ class Builder
 
     public function withColums(callable $collback = null): static
     {
+
+        $collums = $this->getReader()->getHeader();
+
+        foreach ($collums as &$value) {
+            $row = new Row\Column($value, true);
+            $value = $row->getValue();
+        }
+
         if(!is_null($collback)){
-            $this->collums = $collback($this->getReader()->getHeader());
+            $this->collums = $collback($collums);
         }
 
         return $this;
