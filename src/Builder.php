@@ -16,6 +16,8 @@ use JsonSerializable;
 use League\Csv\Reader;
 use League\Csv\Statement;
 use Rahul900day\Csv\Concerns\HasReader;
+use Rahul900day\Csv\Sanitizers\ConvertCharset;
+use Rahul900day\Csv\Sanitizers\TrimString;
 use Rahul900day\Csv\Sheet\Row;
 use Traversable;
 use UnitEnum;
@@ -29,9 +31,6 @@ class Builder
     protected bool|array $sanitize = false;
 
     protected array $collums = [];
-
-    protected string $fromCharset = 'utf-8';
-    protected string $toCharset = 'utf-8';
 
     public function __construct(protected Reader $reader)
     {
@@ -77,12 +76,12 @@ class Builder
 
     public function withColums(callable $collback = null): static
     {
+
         $collums = $this->getReader()->getHeader();
 
-        if($this->fromCharset !== $this->toCharset) {
-            foreach ($collums as $k => $collum) {
-                $collums[$k] = iconv($this->fromCharset, $this->toCharset, $collum);
-            }
+        foreach ($collums as &$value) {
+            $row = new Row\Column($value, true);
+            $value = $row->getValue();
         }
 
         if(!is_null($collback)){
@@ -91,14 +90,6 @@ class Builder
 
         return $this;
     }
-
-    public function willBeConverted($fromCharset = 'windows-1251', $toCharset = 'utf-8')
-    {
-        $this->fromCharset = $fromCharset;
-        $this->toCharset = $toCharset;
-        return $this;
-    }
-
 
     public function lazy(int $chunkSize = 1000): LazyCollection
     {
@@ -109,11 +100,6 @@ class Builder
                 $results = $this->forPage($page++, $chunkSize)->get($this->withColums()->collums);
 
                 foreach ($results as $result) {
-                    if($this->toCharset !== $this->fromCharset) {
-                        foreach ($result->toArray() as $offset => &$rec) {
-                            $result->offsetSet($offset, iconv($this->fromCharset, $this->toCharset, $rec ?? ''));
-                        }
-                    }
                     yield $result;
                 }
 
