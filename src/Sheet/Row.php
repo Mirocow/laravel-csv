@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Rahul900day\Csv\Sheet;
 
 use ArrayAccess;
-use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
 use Rahul900day\Csv\Csv;
 use Rahul900day\Csv\Exceptions\ColumnDoesNotExists;
