@@ -58,11 +58,6 @@ class Row implements ArrayAccess
         Arr::set($this->record, $offset, '');
     }
 
-    public function toArray()
-    {
-        return $this->record;
-    }
-
     protected function validateKeyExists(string $key, ?string $message = null): void
     {
         if ($this->has($key)) {
