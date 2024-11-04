@@ -16,7 +16,7 @@ use JsonSerializable;
 use League\Csv\Reader;
 use League\Csv\Statement;
 use Rahul900day\Csv\Concerns\HasReader;
-use Rahul900day\Csv\Sanitizers\ConvertCharset;
+use Rahul900day\Csv\Sanitizers\ConvertCharsetFromCp1251ToUtf8;
 use Rahul900day\Csv\Sanitizers\TrimString;
 use Rahul900day\Csv\Sheet\Row;
 use Traversable;
