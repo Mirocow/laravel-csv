@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Rahul900day\Csv\Sheet;
 
 use ArrayAccess;
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
 use Rahul900day\Csv\Csv;
 use Rahul900day\Csv\Exceptions\ColumnDoesNotExists;
@@ -55,6 +56,11 @@ class Row implements ArrayAccess
         $this->validateKeyExists($offset, 'Unable unset, column does not exists in the column list.');
 
         Arr::set($this->record, $offset, '');
+    }
+
+    public function toArray()
+    {
+        return $this->record;
     }
 
     protected function validateKeyExists(string $key, ?string $message = null): void
