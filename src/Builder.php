@@ -74,7 +74,7 @@ class Builder
         ));
     }
 
-    public function withColums(callable $collback = null): static
+    public function withColumns(callable $collback = null): static
     {
 
         $collums = $this->getReader()->getHeader();
@@ -97,7 +97,7 @@ class Builder
             $page = 1;
 
             while (true) {
-                $results = $this->forPage($page++, $chunkSize)->get($this->withColums()->collums);
+                $results = $this->forPage($page++, $chunkSize)->get($this->withColumns()->collums);
 
                 foreach ($results as $result) {
                     yield $result;
