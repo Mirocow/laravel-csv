@@ -57,6 +57,15 @@ class Row implements ArrayAccess
         Arr::set($this->record, $offset, '');
     }
 
+    public function toArray(): array
+    {
+        $attributes = [];
+        foreach($this->record as $name => $row){
+            $attributes[$name] = (new Csv::$columnClass($row, $this->sanitize))->getValue();
+        }
+        return $attributes;
+    }
+
     protected function validateKeyExists(string $key, ?string $message = null): void
     {
         if ($this->has($key)) {
